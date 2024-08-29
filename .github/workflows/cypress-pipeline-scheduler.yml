@@ -1,0 +1,44 @@
+# Nome da Pipeline
+name: Executar Pipeline Cypress - Scheduler
+
+# Momento de Execução
+# Cron recebe 5 parametros Minuto/Hour/Day/Month/Day of Week
+  # * Todos
+  # Lista: 2,10,4,5
+  # Range: 4-6 Exemplo dia da Semana: Seg a Sexta: 1-5
+  # Step: 20/15 Inicia no minuto 20 a cada 15 minutos
+on:
+  schedule:  
+    - cron: 0 1-20 * * 1-5
+
+jobs: 
+  # Definições para Rodar os Testes na Pipeline
+  cypress-run:
+    # Máquina de Execução
+    runs-on: ubuntu-latest
+
+    # Roteiro de Execução dos Testes
+    steps: 
+      - name: Checkout/Clone do Projeto
+        # Utilizar Ação definida
+        uses: actions/checkout@v4
+
+      # Instalar Dependências
+      - name: Execução Terminal
+        run: npm install
+
+      # Execução e Configuração do Projeto
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          record: true
+        env:
+          # GitHub token 
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      
+      # Upload do relatório do mocha
+      - name: Upload relatório Mocha      
+        uses: actions/upload-artifact@v4
+        with:
+          name: Relatório de Execução
+          path: cypress/reports/html

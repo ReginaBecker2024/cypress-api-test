@@ -1,0 +1,38 @@
+# Nome da Pipeline
+name: Executar Pipeline Cypress
+
+# Momento de Execução
+on:
+  push:
+
+jobs: 
+  # Definições para Rodar os Testes na Pipeline
+  cypress-run:
+    # Máquina de Execução
+    runs-on: ubuntu-latest
+
+    # Roteiro de Execução dos Testes
+    steps: 
+      - name: Checkout/Clone do Projeto
+        # Utilizar Ação definida
+        uses: actions/checkout@v4
+
+      # Instalar Dependências
+      - name: Execução Terminal
+        run: npm install
+
+      # Execução e Configuração do Projeto
+      - name: Cypress run
+        uses: cypress-io/github-action@v6
+        with:
+          record: true
+        env:
+          # GitHub token 
+          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+      
+      # Upload do relatório do mocha
+      - name: Upload relatório Mocha      
+        uses: actions/upload-artifact@v4
+        with:
+          name: Relatório de Execução
+          path: cypress/reports/html

@@ -1,7 +1,7 @@
 /// <referencetypes="cypress"/>
 describe('Cadastrar dispositivos', () => {
     it('Cadastrar um dispositivo', () => {
-        const dataAtual = new Date().toISOString().slice(0, 16)
+        const dataAtual = new Date().toISOString().slice(0, 10)
         const body = {
                 "name": "Apple MacBook Pro 16",
                 "data": {
@@ -26,7 +26,7 @@ describe('Cadastrar dispositivos', () => {
                 expect(response.status).equal(200)
                 expect(response.body.id).not.empty
                 expect(response.body.createdAt).not.empty
-                expect(response.body.createdAt.slice(0, 16)).equal(dataAtual)
+                expect(response.body.createdAt.slice(0, 10)).equal(dataAtual)
 
                 //console.log(response.body.createdAt.slice(0, 10))
                 // Slice da Posição 0 até 10
