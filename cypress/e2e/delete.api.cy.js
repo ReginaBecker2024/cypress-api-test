@@ -10,28 +10,26 @@ describe('Excluir dispositivos', () => {
                "Hard disk size": "1 TB"
             }
         }
-        cy.request({
-            method: 'POST',
-            url: 'https://api.restful-api.dev/objects',
-            failOnStatusCode: false,
-            body: body
-        }).as('postDeviceResult')
-
-        // Validações/Asserções
-        cy.get('@postDeviceResult').then((response_post) => {                
+        cy.cadastrarDevice(body)
+            .then((response_post) => {                
                 expect(response_post.status).equal(200)        
 
-        cy.request({
-            method: 'DELETE',
-            url: `https://api.restful-api.dev/objects/${response_post.body.id}`,
-            failOnStatusCode: false
-        }).as('deleteDeviceResult')
+            const devide_id = response_post.body.id
 
-        // Validações/Asserções
-        cy.get('@deleteDeviceResult').then((response_del) => {
+        cy.excluirDevice(devide_id)
+            .then((response_del) => {
                 expect(response_del.status).equal(200)
                 expect(response_del.body.message).equal(`Object with id = ${response_post.body.id} has been deleted.`)
-            })
         })  
+    })          
     })
+
+    it('Excluir um dispositivo não existente', () => {
+            const id_inexistente = 'regina'
+        cy.excluirDevice(id_inexistente)
+            .then((response_del) => {
+                expect(response_del.status).equal(404)
+                expect(response_del.body.error).equal(`Object with id = ${id_inexistente} doesn't exist.`)
+        })  
+    })    
 })  
