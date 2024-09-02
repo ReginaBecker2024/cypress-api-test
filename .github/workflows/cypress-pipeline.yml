@@ -2,8 +2,8 @@
 name: Executar Pipeline Cypress
 
 # Momento de Execução
-on:
-  push:
+on: 
+  [push]
 
 jobs: 
   # Definições para Rodar os Testes na Pipeline
