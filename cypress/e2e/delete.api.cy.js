@@ -1,16 +1,9 @@
 /// <referencetypes="cypress"/>
 describe('Excluir dispositivos', () => {
+    const payload_cadastro_device = require('../fixtures/Cadastrar_device_sucesso.json')    
+
     it('Excluir um dispositivo específico', () => {
-        const body = {
-            "name": "Apple MacBook Pro 16",
-            "data": {
-               "year": 2019,
-               "price": 1849.99,
-               "CPU model": "Intel Core i9",
-               "Hard disk size": "1 TB"
-            }
-        }
-        cy.cadastrarDevice(body)
+        cy.cadastrarDevice(payload_cadastro_device)
             .then((response_post) => {                
                 expect(response_post.status).equal(200)        
 
